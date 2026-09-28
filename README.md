@@ -56,3 +56,12 @@ reviews/               downloaded PRs + drafts (gitignored)
   gitignored — nothing personal is committed.
 - Markdown from PRs is sanitized (`<script>`, `on*=`, `javascript:` stripped) before render.
 - Split view pairs deletions/additions line-by-line (no intraline highlighting).
+
+## License
+
+[GNU AGPL-3.0](LICENSE). You may use, modify, and redistribute this code freely,
+**but** if you distribute it or run a modified version as a network/online service,
+you must make your full source code available to its users under the same license.
+Keep the attribution and link back to this project:
+
+> Based on [offline-pr-review](https://github.com/Lopi045/offline-pr-review).
