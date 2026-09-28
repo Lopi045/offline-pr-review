@@ -1,0 +1,15 @@
+# Downloaded PR data + local project paths (personal, never commit)
+reviews/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
