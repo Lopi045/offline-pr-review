@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pytest
+      - name: Byte-compile Python
+        run: python -m py_compile app.py prreview/*.py
+      - name: Run tests
+        run: python -m pytest -q
+      - name: Check JS syntax
+        run: for f in static/*.js; do node --check "$f"; done
