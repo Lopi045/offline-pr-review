@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="crumb"><a href="/">home</a> / {{repo}}</div>
+<h1>Open PRs</h1>
+{% if err %}<div class="card" style="border-color:#cf222e">Error: {{err}}</div>{% endif %}
+{% if prs %}
+<form action="/download" method="post">
+ <input type="hidden" name="repo" value="{{repo}}">
+ <div class="card">
+  Local project path (branches get checked out here, optional):
+  <input name="path" value="{{path}}" placeholder="C:\path\to\repo" size="45">
+  <div style="margin-top:.5rem">
+   <button type="submit">Download selected for offline review</button>
+   <a href="#" class="muted" onclick="toggleAll(event)">select all / none</a>
+  </div>
+ </div>
+ {% for p in prs %}<div class="card">
+  <label style="display:flex;gap:.5rem;align-items:baseline">
+   <input type="checkbox" name="number" value="{{p.number}}">
+   <span><b>#{{p.number}}</b> {{p.title}}
+    <span class="muted">by {{p.author.login}} · {{p.headRefName}}</span></span>
+  </label>
+ </div>{% endfor %}
+</form>
+{% else %}<p class="muted">No open PRs (or repo not found).</p>{% endif %}
+{% endblock %}
+{% block script %}<script src="{{ url_for('static', filename='pulls.js') }}"></script>{% endblock %}

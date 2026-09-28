@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}#{{d.number}} {{d.title}}{% endblock %}
+{% block body %}
+<div class="crumb"><a href="/">home</a> / {{d.repo}} /
+ <a href="{{d.url}}" target="_blank">#{{d.number}} on GitHub ↗</a></div>
+<h1>{{d.title}} <span class="num">#{{d.number}}</span>
+ {% if d.published %}<span class="pill">published</span>{% endif %}</h1>
+<p class="muted"><b>{{d.author}}</b> wants to merge
+ <code class="branch" title="click to copy branch name"
+       onclick="copyBranch(this)">{{d.head}}</code> → <span class="num">{{d.base}}</span></p>
+{% if d.labels %}<div style="margin:.3rem 0 .6rem">
+ {% for l in d.labels %}<span class="label"
+   style="background:#{{l.color}};color:{{l.color|texton}}">{{l.name}}</span>{% endfor %}
+</div>{% endif %}
+{% if d.checkout_msg %}<div class="card muted">🌿 {{d.checkout_msg}}</div>{% endif %}
+{% if d.body %}<div class="card md">{{ d.body|md }}</div>{% endif %}
+
+{% if d.discussion %}<h3>Discussion</h3>
+ {% for c in d.discussion %}<div class="card">
+  <div class="disc"><div class="who">{{c.author}}</div>
+   <div class="md">{{ c.body|md }}</div></div>
+ </div>{% endfor %}
+{% endif %}
+
+<h3>Files changed <span class="muted">({{files|length}})</span></h3>
+<div class="viewtoggle">
+ <button id="btn-unified" class="sec" onclick="setView('unified')">Unified</button>
+ <button id="btn-split" class="sec" onclick="setView('split')">Split</button>
+ <span class="muted" style="margin-left:.5rem">tip: click a line number to comment; click a
+  second number in the same file &amp; side to make it a range.</span>
+</div>
+<div id="diff"></div>
+
+<h3>Comment on the PR <span class="muted">(conversation, optional)</span></h3>
+<div class="card">
+ <textarea id="pr_comment" rows="3" placeholder="A general comment on the PR…">{{d.pr_comment or ''}}</textarea>
+</div>
+
+<div class="bar">
+ <select id="event">
+  {% for e,label in [('COMMENT','💬 Comment'),('APPROVE','✅ Approve'),('REQUEST_CHANGES','🔴 Request changes')] %}
+  <option value="{{e}}" {{'selected' if d.event==e}}>{{label}}</option>{% endfor %}
+ </select>
+ <input id="review_body" placeholder="Overall review summary…" style="flex:1;min-width:200px"
+        value="{{d.review_body}}">
+ <button class="sec" onclick="saveDraft()">Save draft</button>
+ <button onclick="publish()">Publish to GitHub</button>
+ <button class="sec" onclick="syncPR()" title="publish draft, then re-download latest PR state">⟳ Update</button>
+ <span id="status" class="muted"></span>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+window.PR = {
+ key: {{ key|tojson }},
+ files: {{ files|tojson }},
+ existing: {{ (d.existing_comments or [])|tojson }},
+ comments: {{ d.comments|tojson }}
+};
+</script>
+<script src="{{ url_for('static', filename='review.js') }}"></script>
+{% endblock %}

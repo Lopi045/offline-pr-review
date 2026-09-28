@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>📥 Offline PR Review</h1>
+<div class="card">
+ <form action="/pulls" method="get" style="display:flex;gap:.6rem;flex-wrap:wrap">
+  <input name="repo" placeholder="owner/name — jump to any repo" size="35" required style="flex:1">
+  <button type="submit">List open PRs</button>
+ </form>
+</div>
+{% if drafts %}<h3>Saved reviews <span class="muted">(available offline)</span></h3>
+ {% for d in drafts %}<div class="card hover" style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
+   <div>
+    <a href="/review/{{d.key}}"><b>#{{d.number}}</b> {{d.title}}</a>
+    {% if d.published %}<span class="pill">published</span>{% endif %}
+    <div class="muted num">{{d.repo}}</div>
+   </div>
+   <button class="sec" onclick="sync('{{d.key}}',this)" title="publish draft + re-download latest">⟳ Update</button>
+ </div>{% endfor %}
+{% endif %}
+<h3>Your repos</h3>
+{% for r in repos %}<div class="card hover">
+  <a href="/pulls?repo={{r.nameWithOwner}}"><b>{{r.nameWithOwner}}</b></a>
+  {% if r.description %}<div class="muted">{{r.description}}</div>{% endif %}
+</div>{% else %}<p class="muted">No repos listed (or gh not authed). Use the box above.</p>{% endfor %}
+{% endblock %}
+{% block script %}<script src="{{ url_for('static', filename='home.js') }}"></script>{% endblock %}
