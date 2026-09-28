@@ -1,5 +1,9 @@
 # Offline PR Review
 
+[![Latest release](https://img.shields.io/github/v/release/Lopi045/offline-pr-review?label=version)](https://github.com/Lopi045/offline-pr-review/releases)
+[![CI](https://github.com/Lopi045/offline-pr-review/actions/workflows/ci.yml/badge.svg)](https://github.com/Lopi045/offline-pr-review/actions/workflows/ci.yml)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
+
 A tiny local web app to review GitHub pull requests **offline**: download open PRs,
 read the diff, write inline + range comments and a verdict with no internet, then
 publish the whole review in one click when you're back online.
@@ -65,3 +69,12 @@ you must make your full source code available to its users under the same licens
 Keep the attribution and link back to this project:
 
 > Based on [offline-pr-review](https://github.com/Lopi045/offline-pr-review).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). PRs welcome — `master` is protected, so
+changes go through a pull request.
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=Lopi045/offline-pr-review)](https://github.com/Lopi045/offline-pr-review/graphs/contributors)
